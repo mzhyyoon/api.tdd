@@ -22,7 +22,7 @@ router.get('/', (req, res) => {
                 res.status(200)
                     .json({
                         success: true,
-                        result: JSON.stringify(data)
+                        result: data
                     })
                     .end();
             }
