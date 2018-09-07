@@ -1,0 +1,29 @@
+{
+  "name": "api.tdd",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start" : "node ./bin/www.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mzhyyoon/api.tdd.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/mzhyyoon/api.tdd/issues"
+  },
+  "homepage": "https://github.com/mzhyyoon/api.tdd#readme",
+  "dependencies": {
+    "body-parser": "^1.18.3",
+    "chai": "^4.1.2",
+    "chromedriver": "^2.41.0",
+    "express": "^4.16.3",
+    "mocha": "^5.2.0",
+    "node-cmd": "^3.0.0",
+    "selenium-webdriver": "^4.0.0-alpha.1"
+  }
+}
