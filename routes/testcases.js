@@ -14,7 +14,9 @@ router.get('/:id', (req, res) => {
 
     testcases.find({
         id: decodeURIComponent(req.params.id)
-    }).toArray((err, testcase) => {
+    }).sort({
+        timestamp: -1
+    }).limit(1).toArray((err, testcase) => {
         if(err) {
             throw err;
         }
@@ -31,6 +33,36 @@ router.get('/:id', (req, res) => {
     });
 });
 
+router.get('/timestamps/:id', (req, res) => {
+    const testcases = db.get().collection('testcases');
+
+    const findOption = {
+        id: decodeURIComponent(req.params.id)
+    };
+
+    if(req.query && req.query.date) {
+        findOption.timestamp = req.query.date;
+    }
+
+    testcases
+        .find(findOption)
+        .toArray((err, testcase) => {
+            if(err) {
+                throw err;
+            }
+
+            if(testcase.length === 0) {
+                res.sendStatus(404).end();
+            } else {
+                res.status(200)
+                    .json({
+                        timestamp : testcase.map(testcase => testcase.timestamp)
+                    })
+                    .end();
+            }
+        });
+});
+
 router.post('/', (req, res) => {
     const testcases = db.get().collection('testcases');
 
@@ -39,32 +71,14 @@ router.post('/', (req, res) => {
         (err, data) => {
             const result = JSON.parse(data);
 
-            testcases.find({
-                _id: ObjectId(req.body.id)
-            }).toArray((err, testcase) => {
-                if(err) {
-                    throw err;
-                }
-
-                if(testcase.length === 0) {
-                    testcases.insert({
-                        id: req.body.userId || "",
-                        timestamp: Date.now(),
-                        type: req.body.type,
-                        result
-                    });
-                } else {
-                    testcases.update({
-                        _id: ObjectId(req.body.id)
-                    }, {
-                        $set : {
-                            timestamp: Date.now(),
-                            result
-                        }
-                    })
-                }
-                res.status(200).end();
+            testcases.insert({
+                id: req.body.userId || "",
+                timestamp: Date.now(),
+                type: req.body.type,
+                result
             });
+
+            res.status(200).end();
         }
     );
 });
