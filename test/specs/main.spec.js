@@ -20,12 +20,24 @@ describe('Mobile > Main', function () {
         driver.get('http://m.lottemart/mobile/corners.do');
     });
 
-    it('Page Title 은 "롯데마트몰 - easy & slow life" 인가?', () => {
+    after(function () {
+        driver.quit();
+    });
+
+    it('Page Title 은 "롯데마트몰 - easy & slow life" 인가? -> success', (done) => {
         driver.sleep(1000).then(function () {
             driver.getTitle().then((title) => {
                 assert.equal(title, '롯데마트몰 - easy & slow life');
+                done();
+            });
+        });
+    });
 
-                driver.quit();
+    it('Page Title 은 "롯데마트몰 - easy & slow life" 인가? -> fail', (done) => {
+        driver.sleep(1000).then(function () {
+            driver.getTitle().then((title) => {
+                assert.equal(title, 'fail');
+                done();
             });
         });
     });

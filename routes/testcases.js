@@ -31,7 +31,7 @@ router.get('/:id', (req, res) => {
     });
 });
 
-router.post('/', async (req, res) => {
+router.post('/', (req, res) => {
     const testcases = db.get().collection('testcases');
 
     cmd.get(
