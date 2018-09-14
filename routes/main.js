@@ -11,21 +11,12 @@ router.get('/', (req, res) => {
     cmd.get(
         'mocha ./test/specs/main.spec.js --reporter json --timeout 20000',
         (err, data) => {
-            if (err) {
-                res.status(500)
-                    .json({
-                        success: false,
-                        result: err
-                    })
-                    .end();
-            } else {
-                res.status(200)
-                    .json({
-                        success: true,
-                        result: data
-                    })
-                    .end();
-            }
+            res.status(200)
+                .json({
+                    success: true,
+                    result: data
+                })
+                .end();
         }
     );
 });

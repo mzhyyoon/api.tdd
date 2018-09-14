@@ -37,39 +37,34 @@ router.post('/', (req, res) => {
     cmd.get(
         'mocha ./test/specs/main.spec.js --reporter json --timeout 20000',
         (err, data) => {
-            if (err) {
-                res.sendStatus(500).end();
-            } else {
-                const result = JSON.parse(data);
+            const result = JSON.parse(data);
 
-                testcases.find({
-                    _id: ObjectId(req.body.id)
-                }).toArray((err, testcase) => {
-                    if(err) {
-                        throw err;
-                    }
+            testcases.find({
+                _id: ObjectId(req.body.id)
+            }).toArray((err, testcase) => {
+                if(err) {
+                    throw err;
+                }
 
-                    if(testcase.length === 0) {
-                        testcases.insert({
-                            id: req.body.userId || "",
+                if(testcase.length === 0) {
+                    testcases.insert({
+                        id: req.body.userId || "",
+                        timestamp: Date.now(),
+                        type: req.body.type,
+                        result
+                    });
+                } else {
+                    testcases.update({
+                        _id: ObjectId(req.body.id)
+                    }, {
+                        $set : {
                             timestamp: Date.now(),
-                            type: req.body.type,
                             result
-                        });
-                    } else {
-                        testcases.update({
-                            _id: ObjectId(req.body.id)
-                        }, {
-                            $set : {
-                                timestamp: Date.now(),
-                                result
-                            }
-                        })
-                    }
-
-                    res.status(200).end();
-                });
-            }
+                        }
+                    })
+                }
+                res.status(200).end();
+            });
         }
     );
 });
