@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const db = require('../db');
+const cmd = require('node-cmd');
 const ObjectId = require('mongodb').ObjectId;
 
 router.use(function timeLog(req, res, next) {
@@ -33,19 +34,44 @@ router.get('/:id', (req, res) => {
 router.post('/', async (req, res) => {
     const testcases = db.get().collection('testcases');
 
-    fetch(`${process.env.NODE_ENV === 'development' ? 'http://localhost:3001' : 'https://api-tdd-test.herokuapp.com'}/${req.body.type}`)
-        .then((res) => res.json())
-        .then((resJSON) => {
-            testcases.update({
-                _id: ObjectId(req.body.id),
-                result: JSON.parse(
-                    JSON.stringify(resJSON.result)
-                )
-            });
+    cmd.get(
+        'mocha ./test/specs/main.spec.js --reporter json --timeout 20000',
+        (err, data) => {
+            if (err) {
+                res.sendStatus(500).end();
+            } else {
+                const result = JSON.parse(data);
 
-            res.sendStatus(200).end();
-        })
-        .catch(() => res.sendStatus(500).end());
+                testcases.find({
+                    _id: ObjectId(req.body.id)
+                }).toArray((err, testcase) => {
+                    if(err) {
+                        throw err;
+                    }
+
+                    if(testcase.length === 0) {
+                        testcases.insert({
+                            id: req.body.userId || "",
+                            timestamp: Date.now(),
+                            type: req.body.type,
+                            result
+                        });
+                    } else {
+                        testcases.update({
+                            _id: ObjectId(req.body.id)
+                        }, {
+                            $set : {
+                                timestamp: Date.now(),
+                                result
+                            }
+                        })
+                    }
+
+                    res.status(200).end();
+                });
+            }
+        }
+    );
 });
 
 module.exports = router;
