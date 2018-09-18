@@ -12,26 +12,60 @@ router.use(function timeLog(req, res, next) {
 router.get('/:id', (req, res) => {
     const testcases = db.get().collection('testcases');
 
-    testcases.find({
-        id: decodeURIComponent(req.params.id)
-    }).sort({
+    if(req.query && req.query.type) {
+        getTestcaseByType(testcases, res, {
+            $and: [{
+                id: decodeURIComponent(req.params.id)
+            }, {
+                type: req.query.type
+            }]
+        });
+    } else {
+        getTestcaseByLast(testcases, res, {
+            id: decodeURIComponent(req.params.id)
+        });
+    }
+});
+
+const getTestcaseByLast = (db, response, findOption) => {
+    db.find(findOption).sort({
         timestamp: -1
     }).limit(1).toArray((err, testcase) => {
-        if(err) {
+        if (err) {
             throw err;
         }
 
-        if(testcase.length === 0) {
-            res.sendStatus(404).end();
+        if (testcase.length === 0) {
+            response.sendStatus(404).end();
         } else {
-            res.status(200)
+            response.status(200)
                 .json({
                     testcase
                 })
                 .end();
         }
     });
-});
+};
+
+const getTestcaseByType = (db, response, findOption) => {
+    db.find(findOption).sort({
+        timestamp: -1
+    }).toArray((err, testcase) => {
+        if (err) {
+            throw err;
+        }
+
+        if (testcase.length === 0) {
+            response.sendStatus(404).end();
+        } else {
+            response.status(200)
+                .json({
+                    testcase
+                })
+                .end();
+        }
+    });
+};
 
 router.get('/timestamps/:id', (req, res) => {
     const testcases = db.get().collection('testcases');
