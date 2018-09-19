@@ -16,8 +16,9 @@ let driver = new Builder()
     .build();
 
 describe('Mobile > Main', function () {
-    before(async function () {
-        await driver.get('http://m.lottemart.com/mobile/corners.do');
+    before(function () {
+        this.enableTimeouts(false);
+        driver.get('http://m.lottemart.com/mobile/corners.do');
     });
 
     after(function () {
