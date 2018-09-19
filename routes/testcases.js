@@ -101,7 +101,7 @@ router.post('/', (req, res) => {
     const testcases = db.get().collection('testcases');
 
     cmd.get(
-        'mocha ./test/specs/main.spec.js --reporter json --timeout 20000',
+        'mocha ./test/specs/main.spec.js --reporter json --timeout 200000',
         (err, data) => {
             const result = JSON.parse(data);
 
