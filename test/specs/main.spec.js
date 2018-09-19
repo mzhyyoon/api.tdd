@@ -15,28 +15,24 @@ let driver = new Builder()
     })
     .build();
 
-driver.get('http://m.lottemart.com/mobile/corners.do');
+describe('Mobile > Main', function () {
+    beforeEach('start browser!', async () => {
+        await driver.get('http://m.lottemart.com/mobile/corners.do');
+    });
 
-setTimeout(() => {
-    describe('Mobile > Main', function () {
-        after('close browser!', () => {
-            driver.quit();
-        });
-
-        it('Page Title 은 "롯데마트몰 - easy & slow life" 인가? -> success', (done) => {
-            driver.getTitle().then((title) => {
-                assert.equal(title, '롯데마트몰 - easy & slow life');
-                done();
-            });
-        });
-
-        it('Page Title 은 "롯데마트몰 - easy & slow life" 인가? -> fail', (done) => {
-            driver.getTitle().then((title) => {
-                assert.equal(title, 'lottemart');
-                done();
-            });
+    it('Page Title 은 "롯데마트몰 - easy & slow life" 인가? -> success', async () => {
+        this.timeout(1500);
+        await driver.getTitle().then(async (title) => {
+            await assert.equal(title, '롯데마트몰 - easy & slow life');
         });
     });
 
-    run();
-}, 10000);
+    it('Page Title 은 "롯데마트몰 - easy & slow life" 인가? -> fail', async () => {
+        this.timeout(2500);
+        await driver.getTitle().then(async (title) => {
+            await assert.equal(title, 'lottemart');
+        });
+    });
+});
+
+setTimeout(() => driver.quit(), 20000);
