@@ -7,7 +7,7 @@ let driver = new Builder()
     .withCapabilities({
         browserName: 'chrome',
         chromeOptions: {
-            // args : ['headless','disable-gpu'],
+            args : ['headless','disable-gpu'],
             mobileEmulation: {
                 deviceName: 'iPhone 6/7/8 Plus'
             }
@@ -39,4 +39,4 @@ setTimeout(() => {
     });
 
     run();
-}, 3000);
+}, 10000);
