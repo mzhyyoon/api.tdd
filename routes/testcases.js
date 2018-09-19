@@ -101,9 +101,11 @@ router.post('/', (req, res) => {
     const testcases = db.get().collection('testcases');
 
     cmd.get(
-        'mocha ./test/specs/main.spec.js --reporter json --timeout 200000',
+        'mocha ./test/specs/main.spec.js --reporter json',
         (err, data) => {
             const result = JSON.parse(data);
+
+            console.log('[error] : /test/specs/main.spec.js ', err);
 
             testcases.insert({
                 id: req.body.userId || "",
