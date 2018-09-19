@@ -21,18 +21,15 @@ describe('Mobile > Main', function () {
     });
 
     it('Page Title 은 "롯데마트몰 - easy & slow life" 인가? -> success', async () => {
-        this.timeout(1500);
         await driver.getTitle().then(async (title) => {
             await assert.equal(title, '롯데마트몰 - easy & slow life');
         });
     });
 
     it('Page Title 은 "롯데마트몰 - easy & slow life" 인가? -> fail', async () => {
-        this.timeout(2500);
+        this.timeout(1500);
         await driver.getTitle().then(async (title) => {
             await assert.equal(title, 'lottemart');
         });
     });
 });
-
-setTimeout(() => driver.quit(), 20000);
