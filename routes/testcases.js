@@ -101,7 +101,7 @@ router.post('/', (req, res) => {
     const testcases = db.get().collection('testcases');
 
     cmd.get(
-        'mocha --recursive ./test/specs/*.js --reporter json --async-only --delay',
+        'mocha --recursive ./test/specs/*.js --reporter json --timeout 10000 --delay',
         (err, data) => {
             const result = JSON.parse(data);
 
