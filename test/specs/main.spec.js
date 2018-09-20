@@ -4,7 +4,7 @@ const {Builder} = require('selenium-webdriver');
 const {assert} = require('chai');
 
 const chromeOptions = {
-    args: ['headless', 'disable-gpu'],
+    args: ['--headless', '--disable-gpu'],
     mobileEmulation: {
         deviceName: 'iPhone 6/7/8 Plus'
     }
