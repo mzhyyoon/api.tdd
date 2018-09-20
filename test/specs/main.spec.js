@@ -1,6 +1,5 @@
-require('chromedriver');
-
 const {Builder} = require('selenium-webdriver');
+const chrome = require('selenium-webdriver/chrome');
 const {assert} = require('chai');
 
 describe('Mobile > Main', function () {
@@ -9,13 +8,11 @@ describe('Mobile > Main', function () {
 
     before(function () {
         driver = new Builder()
-            .withCapabilities({
-                browserName: 'chrome',
-                chromeOptions: {
-                    args: ['headless', 'disable-gpu'],
-                    mobileEmulation: {
-                        deviceName: 'iPhone 6/7/8 Plus'
-                    }
+            .forBrowser('chrome')
+            .setChromeOptions({
+                args: ['headless', 'disable-gpu'],
+                mobileEmulation: {
+                    deviceName: 'iPhone 6/7/8 Plus'
                 }
             })
             .build();
