@@ -1,5 +1,6 @@
+require('chromedriver');
+
 const {Builder} = require('selenium-webdriver');
-const chrome = require('selenium-webdriver/chrome');
 const {assert} = require('chai');
 
 describe('Mobile > Main', function () {
