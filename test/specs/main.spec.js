@@ -3,6 +3,17 @@ require('chromedriver');
 const {Builder} = require('selenium-webdriver');
 const {assert} = require('chai');
 
+const chromeOptions = {
+    args: ['headless', 'disable-gpu'],
+    mobileEmulation: {
+        deviceName: 'iPhone 6/7/8 Plus'
+    }
+};
+
+if(process.env.NODE_ENV === 'production') {
+    chromeOptions.binary = '/app/.apt/usr/bin/google-chrome';
+}
+
 describe('Mobile > Main', function () {
     this.timeout(30000);
     let driver;
@@ -11,12 +22,7 @@ describe('Mobile > Main', function () {
         driver = new Builder()
             .withCapabilities({
                 browserName: 'chrome',
-                chromeOptions: {
-                    args: ['headless', 'disable-gpu'],
-                    mobileEmulation: {
-                        deviceName: 'iPhone 6/7/8 Plus'
-                    }
-                }
+                chromeOptions
             })
             .build();
     });
