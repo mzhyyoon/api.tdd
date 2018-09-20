@@ -10,10 +10,6 @@ const chromeOptions = {
     }
 };
 
-if(process.env.NODE_ENV === 'production') {
-    chromeOptions.binary = '/app/.apt/usr/bin/google-chrome';
-}
-
 describe('Mobile > Main', function () {
     this.timeout(30000);
     let driver;
