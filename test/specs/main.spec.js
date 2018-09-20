@@ -9,11 +9,13 @@ describe('Mobile > Main', function () {
 
     before(function () {
         driver = new Builder()
-            .forBrowser('chrome')
-            .setChromeOptions({
-                args: ['headless', 'disable-gpu'],
-                mobileEmulation: {
-                    deviceName: 'iPhone 6/7/8 Plus'
+            .withCapabilities({
+                browserName: 'chrome',
+                chromeOptions: {
+                    args: ['headless', 'disable-gpu'],
+                    mobileEmulation: {
+                        deviceName: 'iPhone 6/7/8 Plus'
+                    }
                 }
             })
             .build();
