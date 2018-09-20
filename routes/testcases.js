@@ -19,6 +19,9 @@ router.get('/:id', (req, res) => {
             }, {
                 type: req.query.type
             }]
+        }, {
+            page : Number(req.query.page),
+            per : Number(req.query.per)
         });
     } else {
         getTestcaseByLast(testcases, res, {
@@ -47,24 +50,36 @@ const getTestcaseByLast = (db, response, findOption) => {
     });
 };
 
-const getTestcaseByType = (db, response, findOption) => {
-    db.find(findOption).sort({
-        timestamp: -1
-    }).toArray((err, testcase) => {
-        if (err) {
-            throw err;
-        }
+const getTestcaseByType = (db, response, findOption, pageOption = {}) => {
+    const dbTestCase = db.find(findOption);
+    const {page = 1, per = 10} = pageOption;
 
-        if (testcase.length === 0) {
-            response.sendStatus(404).end();
-        } else {
-            response.status(200)
-                .json({
-                    testcase
-                })
-                .end();
-        }
-    });
+    console.log('pageOption :', pageOption);
+
+    dbTestCase
+        .sort({
+            timestamp: -1
+        })
+        .skip((page - 1) * per)
+        .limit(per)
+        .toArray((err, testcase) => {
+            if (err) {
+                throw err;
+            }
+
+            if (testcase.length === 0) {
+                response.sendStatus(404).end();
+            } else {
+                dbTestCase.count().then((totalCount) => {
+                    response.status(200)
+                        .json({
+                            testcase,
+                            totalCount
+                        })
+                        .end();
+                });
+            }
+        });
 };
 
 router.get('/timestamps/:id', (req, res) => {
