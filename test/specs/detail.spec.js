@@ -7,7 +7,10 @@ describe('Mobile4 > Main', function () {
     this.timeout(30000);
 
     before(async function () {
-        browser = await puppeteer.launch({ args: ['--no-sandbox', '--disable-setuid-sandbox'] });
+        browser = await puppeteer.launch({
+            headless: false,
+            args: ['--no-sandbox', '--disable-setuid-sandbox']
+        });
         page = await browser.newPage();
     });
 
