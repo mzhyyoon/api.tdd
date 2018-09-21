@@ -9,7 +9,7 @@ describe('Mobile4 > Main', function () {
     before(async function () {
         browser = await puppeteer.launch({ args: ['--no-sandbox', '--disable-setuid-sandbox'] });
         page = await browser.newPage();
-        await page.goto('https://m.lottemart.com/mobile/corners.do');
+        await page.goto('http://m.lottemart.com/mobile/corners.do');
     });
 
     after(function () {
