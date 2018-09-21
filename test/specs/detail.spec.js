@@ -1,7 +1,7 @@
 const puppeteer = require('puppeteer');
 const {assert} = require('chai');
 
-describe('Mobile2 > Main', function () {
+describe('Mobile3 > Main', function () {
     let browser, page;
 
     this.timeout(30000);
