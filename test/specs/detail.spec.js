@@ -8,7 +8,6 @@ describe('Mobile4 > Main', function () {
 
     before(async function () {
         browser = await puppeteer.launch({
-            headless: false,
             args: ['--no-sandbox', '--disable-setuid-sandbox']
         });
         page = await browser.newPage();
