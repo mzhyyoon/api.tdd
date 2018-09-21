@@ -31,7 +31,11 @@
     "mongodb": "^3.1.6",
     "net": "^1.0.2",
     "node-cmd": "^3.0.0",
+    "protractor": "^5.4.1",
+    "puppeteer": "^1.8.0",
     "selenium-webdriver": "^4.0.0-alpha.1",
-    "tls": "0.0.1"
+    "tls": "0.0.1",
+    "webdriverio": "^4.13.2",
+    "webdriverjs": "^1.7.5"
   }
 }
