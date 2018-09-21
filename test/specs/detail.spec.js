@@ -7,7 +7,7 @@ describe('Mobile2 > Main', function () {
     this.timeout(30000);
 
     before(async function () {
-        browser = await puppeteer.launch();
+        browser = await puppeteer.launch({ args: ['--no-sandbox', '--disable-setuid-sandbox'] });
         page = await browser.newPage();
         await page.goto('https://m.lottemart.com/mobile/corners.do');
     });
