@@ -10,7 +10,7 @@ module.exports.connect = (url, dbName, done) => {
         return done();
     }
 
-    MongoClient.connect(url, (err, client) => {
+    MongoClient.connect(url, { useNewUrlParser: true }, (err, client) => {
         if(err) {
             return done(err);
         }
