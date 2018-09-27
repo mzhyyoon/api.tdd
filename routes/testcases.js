@@ -120,9 +120,7 @@ router.post('/', (req, res) => {
         (err, data) => {
             const result = JSON.parse(data);
 
-            console.log('[error] : /test/specs/main.spec.js ', err);
-
-            testcases.insert({
+            testcases.insertOne({
                 id: req.body.userId || "",
                 timestamp: Date.now(),
                 type: req.body.type,
