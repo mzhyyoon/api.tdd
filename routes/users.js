@@ -30,8 +30,10 @@ router.get('/:id', (req, res) => {
     });
 });
 
-router.post('/signin', (req, res) => {
+router.post('/', (req, res) => {
     const user = db.get().collection('users');
+
+    console.log(req.body.password);
 
     user.find({
         email : decodeURIComponent(req.body.email)
@@ -40,33 +42,22 @@ router.post('/signin', (req, res) => {
             throw err;
         }
 
+        console.log(user);
+
         if(user.length === 0) {
             res.status(406)
                 .json({
                     errors : {
-                        status: 406,
                         message: 'Please Check. Id or Password.'
                     }
                 })
                 .end();
         } else {
-            if(user[0].password !== decodeURIComponent(req.body.password)) {
-                res.status(500)
-                    .json({
-                        errors : {
-                            status: 500,
-                            message: 'Please Check. Id or Password.'
-                        }
-                    })
-                    .end();
-            } else {
-                res.status(200)
-                    .json({
-                        status : 200,
-                        user
-                    })
-                    .end();
-            }
+            res.status(200)
+                .json({
+                    user
+                })
+                .end();
         }
     })
 });

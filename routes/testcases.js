@@ -115,13 +115,15 @@ router.get('/timestamps/:id', (req, res) => {
 router.post('/', (req, res) => {
     const testcases = db.get().collection('testcases');
 
+    console.log(req.body);
+
     cmd.get(
         'mocha --recursive ./test/specs/*.js --reporter json',
         (err, data) => {
             const result = JSON.parse(data);
 
             testcases.insertOne({
-                id: req.body.userId || "",
+                id: req.body.id || "",
                 timestamp: Date.now(),
                 type: req.body.type,
                 result
