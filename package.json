@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "node ./bin/www.js",
     "start": "NODE_ENV=production node ./bin/www.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "mocha --recursive ./test/specs/*.spec.js --reporter json"
   },
   "repository": {
     "type": "git",

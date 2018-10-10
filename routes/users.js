@@ -62,4 +62,50 @@ router.post('/', (req, res) => {
     })
 });
 
+router.post('/signup', (req, res) => {
+    console.log('signup!!');
+    console.log(req.body);
+    const dbUser = db.get().collection('users');
+
+    dbUser.find({
+        email: decodeURIComponent(req.body.email)
+    }).toArray((err, user) => {
+        console.log(user);
+        if (err) {
+            throw err;
+        }
+
+        if (user.length !== 0) {
+            res.status(500)
+                .json({
+                    errors: {
+                        message: 'It is an already registered email. '
+                    }
+                })
+                .end();
+        } else {
+            const userInfo = {
+                id: req.body.id,
+                email: req.body.email,
+                password: req.body.password,
+                name: req.body.id,
+                position: 'Tester',
+                level: '3',
+                isBookMark: false,
+                timestamp: Date.now(),
+                profileImage: ''
+            }
+            dbUser.insertOne(userInfo);
+
+            res.status(200)
+                .json({
+                    success : true,
+                    user : [userInfo]
+                })
+                .end();
+        }
+    })
+});
+
+
 module.exports = router;

@@ -2,7 +2,6 @@ const express = require('express');
 const router = express.Router();
 const db = require('../db');
 const cmd = require('node-cmd');
-const ObjectId = require('mongodb').ObjectId;
 
 router.use(function timeLog(req, res, next) {
     console.log('Time: ', Date.now());
@@ -42,9 +41,7 @@ const getTestcaseByLast = (db, response, findOption) => {
             response.sendStatus(404).end();
         } else {
             response.status(200)
-                .json({
-                    testcase
-                })
+                .json(testcase)
                 .end();
         }
     });
@@ -62,18 +59,18 @@ const getTestcaseByType = (db, response, findOption, pageOption = {}) => {
         })
         .skip((page - 1) * per)
         .limit(per)
-        .toArray((err, testcase) => {
+        .toArray((err, testcases) => {
             if (err) {
-                throw err;
+                response.status(500).end();
             }
 
-            if (testcase.length === 0) {
+            if (testcases.length === 0) {
                 response.sendStatus(404).end();
             } else {
                 dbTestCase.count().then((totalCount) => {
                     response.status(200)
                         .json({
-                            testcase,
+                            testcases,
                             totalCount
                         })
                         .end();
@@ -115,21 +112,27 @@ router.get('/timestamps/:id', (req, res) => {
 router.post('/', (req, res) => {
     const testcases = db.get().collection('testcases');
 
-    console.log(req.body);
-
     cmd.get(
-        'mocha --recursive ./test/specs/*.js --reporter json',
+        'mocha --recursive ./test/specs/*.spec.js --reporter json --no-diff',
         (err, data) => {
+            console.log(`[MOCHA TEST FAILURE] : ${err}`);
             const result = JSON.parse(data);
-
-            testcases.insertOne({
+            const testcase = {
                 id: req.body.id || "",
                 timestamp: Date.now(),
                 type: req.body.type,
                 result
-            });
+            };
 
-            res.status(200).end();
+            try {
+                testcases.insertOne(testcase);
+
+                res.status(200)
+                    .json(testcase)
+                    .end();
+            } catch (e) {
+                res.status(500).end();
+            }
         }
     );
 });
