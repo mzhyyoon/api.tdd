@@ -17,13 +17,13 @@ describe('Mobile4 > Main', function () {
         return browser.close();
     });
 
-    it('Page Title 은 "롯데마트몰 - easy & slow life" 인가? -> success', async function () {
-        await page.goto('http://m.lottemart.com/mobile/corners.do');
-
-        return page.title().then(function(title) {
-            assert.equal(title, '롯데마트몰 - easy & slow life');
-        });
-    });
+    // it('Page Title 은 "롯데마트몰 - easy & slow life" 인가? -> success', async function () {
+    //     await page.goto('http://m.lottemart.com/mobile/corners.do');
+    //
+    //     return page.title().then(function(title) {
+    //         assert.equal(title, '롯데마트몰 - easy & slow life');
+    //     });
+    // });
 
     it('naver test??!', async function () {
         await page.goto('http://naver.com');
